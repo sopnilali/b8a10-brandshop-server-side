@@ -128,9 +128,9 @@ async function run() {
 
   //insert product slider
     app.post('/product-sliders', async(req, res) => {
-      const brand = req.body;
-      console.log(brand);
-      const result = await productSlideCollection.insertOne(brand);
+      const product = req.body;
+      console.log(product);
+      const result = await productSlideCollection.insertOne(product);
       console.log(result);
       res.send(result);
 
