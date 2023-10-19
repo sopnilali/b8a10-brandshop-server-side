@@ -60,8 +60,8 @@ async function run() {
         res.send(result);
     })
 
-          // update user data with new data from mongodb database
-          app.put('/product/:id', async(req, res) => {
+    // update user data with new data from mongodb database
+    app.put('/product/:id', async(req, res) => {
             const id = req.params.id;
             const updateProduct = req.body
             console.log(updateProduct);
@@ -153,6 +153,15 @@ async function run() {
       console.log(result);
       res.send(result);
   })
+
+        // find cart with user Id base from database
+        app.get("/mycarts/:userId", async (req, res) => {
+          const userID = req.params.userId;
+          const query = {userID};
+          const cursor = cartCollection.find(query)
+          const result = await cursor.toArray();
+          res.send(result);
+        });
 
     // find all carts from database
     app.get('/mycarts', async(req, res) => {
