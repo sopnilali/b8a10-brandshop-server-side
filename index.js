@@ -40,6 +40,7 @@ async function run() {
     const brandCollection = client.db("mobileDB").collection("brands");
     const productSlideCollection = client.db("mobileDB").collection("sliders");
     const cartCollection = client.db("mobileDB").collection("carts");
+    const reviewCollection = client.db("mobileDB").collection("reviews");
 
     app.get('/', (req, res) => {
         res.send("Welcome to my mobile web app!");
@@ -180,6 +181,23 @@ async function run() {
     console.log(result);
     res.send(result);
   });
+
+  //mobile-reviews part
+
+  // find all mobile-reviews from database
+      app.get('/reviews', async(req, res) => {
+        const cursor = reviewCollection.find()
+        const result = await cursor.toArray();
+        res.send(result)
+    })
+
+        //insert mobile-reviews to database
+        app.post('/reviews', async(req, res) => {
+          const review = req.body;
+          const result = await reviewCollection.insertOne(review);
+          console.log(result);
+          res.send(result);
+      })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
