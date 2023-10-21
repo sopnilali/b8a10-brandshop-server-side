@@ -1,6 +1,3 @@
-const os=require("os")
-os.hostname=()=>"localhost"
-
 const express = require('express');
 const app = express();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
