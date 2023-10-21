@@ -1,3 +1,6 @@
+const os=require("os")
+os.hostname=()=>"localhost"
+
 const express = require('express');
 const app = express();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -7,14 +10,14 @@ const port = process.env.PORT || 5000;
 //dot environment config
 require('dotenv').config()
 
-// const corsConfig = {
-//   origin:'',
-//   credentials: true,
-//   methods: ["GET", "POST", "PUT", "DELETE"],
-// }
+const corsConfig = {
+  origin:'*',
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+}
 // middlewars
-app.use(cors());
-app.options("", cors())
+app.use(cors(corsConfig));
+app.options("", cors(corsConfig))
 app.use(express.json());
 
 
