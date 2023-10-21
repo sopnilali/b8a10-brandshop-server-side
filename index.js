@@ -17,7 +17,7 @@ const corsConfig = {
   headers: ["X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"]
 }
 // middlewars
-// app.use(cors());
+app.use(cors());
 app.options("", cors(corsConfig))
 app.use(express.json());
 
