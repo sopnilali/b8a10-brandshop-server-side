@@ -17,7 +17,7 @@ require('dotenv').config()
 // }
 // middlewars
 app.use(cors());
-app.options("", cors(corsConfig))
+app.options("", cors())
 app.use(express.json());
 
 
