@@ -10,7 +10,8 @@
         {
             "src": "/(.*)",
             "dest": "/",
-            "methods": ["GET", "POST", "PATCH", "DELETE", "OPTIONS"]
+            "methods": ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+            "headers": ["X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"]
         }
     ]
 }
