@@ -8,14 +8,15 @@ const port = process.env.PORT || 5000;
 require('dotenv').config()
 
 const corsConfig = {
-  origin: '',
+  origin:'*',
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  optionSuccessStatus:200,
 }
 // middlewars
 app.use(cors());
 app.use(cors(corsConfig));
-app.options("", cors(corsConfig));
+app.options("", cors(corsConfig))
 app.use(express.json());
 
 
@@ -47,14 +48,14 @@ async function run() {
     });
 
     // find all products from database
-        app.get('/products',cors(), async(req, res) => {
+        app.get('/products',cors(corsConfig), async(req, res) => {
             const cursor = productCollection.find()
             const result = await cursor.toArray();
             res.send(result)
     })
   
     //insert products
-    app.post('/products', cors(), async(req, res) => {
+    app.post('/products', cors(corsConfig), async(req, res) => {
         const product = req.body;
         const result = await productCollection.insertOne(product);
         console.log(result);
@@ -62,7 +63,7 @@ async function run() {
     })
 
     // update user data with new data from mongodb database
-    app.put('/product/:id',cors(), async(req, res) => {
+    app.put('/product/:id',cors(corsConfig), async(req, res) => {
             const id = req.params.id;
             const updateProduct = req.body
             console.log(updateProduct);
@@ -84,7 +85,7 @@ async function run() {
           })
     
     // find single products from database
-    app.get("/products/:bname",cors(), async (req, res) => {
+    app.get("/products/:bname",cors(corsConfig), async (req, res) => {
       const brandName = req.params.bname;
       const query = {brandName};
       const cursor = productCollection.find(query)
@@ -92,7 +93,7 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/product/:id",cors(), async (req, res) => {
+    app.get("/product/:id",cors(corsConfig), async (req, res) => {
       const id = req.params.id;
       const query = {
         _id: new ObjectId(id),
@@ -113,7 +114,7 @@ async function run() {
   })
 
   // find all brands from database
-  app.get('/brands', cors(), async(req, res) => {
+  app.get('/brands', cors(corsConfig), async(req, res) => {
     const cursor = brandCollection.find()
     const result = await cursor.toArray();
     res.send(result)
@@ -122,14 +123,14 @@ async function run() {
 //product slider site
 
     //find all slider products from database
-    app.get('/product-sliders', cors(), async(req, res) => {
+    app.get('/product-sliders', cors(corsConfig), async(req, res) => {
       const cursor = productSlideCollection.find()
       const result = await cursor.toArray();
       res.send(result)
 })
 
   //insert product slider
-    app.post('/product-sliders', cors(), async(req, res) => {
+    app.post('/product-sliders', cors(corsConfig), async(req, res) => {
       const product = req.body;
       console.log(product);
       const result = await productSlideCollection.insertOne(product);
@@ -139,7 +140,7 @@ async function run() {
   })
 
       // find brand name slider from database
-      app.get("/product-sliders/:bname", cors(), async (req, res) => {
+      app.get("/product-sliders/:bname", cors(corsConfig), async (req, res) => {
         const brandName = req.params.bname;
         const query = {brandName};
         const cursor = productSlideCollection.find(query)
@@ -148,7 +149,7 @@ async function run() {
       });
 
     //insert carts to database
-    app.post('/mycarts', cors(), async(req, res) => {
+    app.post('/mycarts', cors(corsConfig), async(req, res) => {
       const product = req.body;
       const result = await cartCollection.insertOne(product);
       console.log(result);
@@ -156,7 +157,7 @@ async function run() {
   })
 
         // find cart with user Id base from database
-        app.get("/mycarts/:userId", cors(), async (req, res) => {
+        app.get("/mycarts/:userId", cors(corsConfig), async (req, res) => {
           const userID = req.params.userId;
           const query = {userID};
           const cursor = cartCollection.find(query)
@@ -165,14 +166,14 @@ async function run() {
         });
 
     // find all carts from database
-    app.get('/mycarts', cors(), async(req, res) => {
+    app.get('/mycarts', cors(corsConfig), async(req, res) => {
       const cursor = cartCollection.find()
       const result = await cursor.toArray();
       res.send(result)
   })
 
   // delete cart item from database
-  app.delete('/mycarts/:id', cors(), async(req, res) => {
+  app.delete('/mycarts/:id', cors(corsConfig), async(req, res) => {
     const id = req.params.id;
     const query = {
       _id: new ObjectId(id),
@@ -185,14 +186,14 @@ async function run() {
   //mobile-reviews part
 
   // find all mobile-reviews from database
-      app.get('/reviews', cors(), async(req, res) => {
+      app.get('/reviews', cors(corsConfig), async(req, res) => {
         const cursor = reviewCollection.find()
         const result = await cursor.toArray();
         res.send(result)
     })
 
         //insert mobile-reviews to database
-        app.post('/reviews', cors(), async(req, res) => {
+        app.post('/reviews', cors(corsConfig), async(req, res) => {
           const review = req.body;
           const result = await reviewCollection.insertOne(review);
           console.log(result);
