@@ -13,8 +13,7 @@ require('dotenv').config()
 const corsConfig = {
   origin:'*',
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  headers: ["X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"]
+  methods: ["GET", "POST", "PUT", "DELETE"]
 }
 // middlewars
 app.use(cors());
