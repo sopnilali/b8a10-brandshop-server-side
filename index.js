@@ -14,6 +14,7 @@ const corsConfig = {
   origin:'*',
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
+  headers: ["X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"]
 }
 // middlewars
 app.use(cors(corsConfig));
