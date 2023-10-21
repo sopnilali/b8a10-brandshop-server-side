@@ -17,7 +17,7 @@ const corsConfig = {
   headers: ["X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"]
 }
 // middlewars
-app.use(cors(corsConfig));
+app.use(cors());
 app.options("", cors(corsConfig))
 app.use(express.json());
 
@@ -64,6 +64,17 @@ async function run() {
         res.send(result);
     })
 
+    // find single product from database
+    app.get("/product/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {
+        _id: new ObjectId(id),
+      };
+      const result = await productCollection.findOne(query);
+      console.log(result);
+      res.send(result);
+    });
+
     // update user data with new data from mongodb database
     app.put('/product/:id', async(req, res) => {
             const id = req.params.id;
@@ -95,15 +106,6 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/product/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = {
-        _id: new ObjectId(id),
-      };
-      const result = await productCollection.findOne(query);
-      console.log(result);
-      res.send(result);
-    });
 
     //insert brands
     app.post('/brands', async(req, res) => {
