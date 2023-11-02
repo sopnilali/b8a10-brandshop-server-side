@@ -20,7 +20,7 @@ const corsConfig = {
 // middlewars
 app.use(cors({
   origin:[
-   'https://mobilemaya.vercel.app'
+   'http://localhost:5173'
   ],
   credentials: true
 }));
@@ -78,27 +78,27 @@ async function run() {
         res.send("Welcome to my mobile web app!");
     });
 
-    //auth related api
+    // //auth related api
 
-    app.post('/jwt', async (req, res) => {
-      const user = req.body;
-      console.log('user for token',user);
-      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,
-      {expiresIn:'1h' });
+    // app.post('/jwt', async (req, res) => {
+    //   const user = req.body;
+    //   console.log('user for token',user);
+    //   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,
+    //   {expiresIn:'1h' });
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none'
-    })
-    .send({success: true});
-    })
+    // res.cookie('token', token, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'none'
+    // })
+    // .send({success: true});
+    // })
 
-    app.post('/logout', async (req, res) => {
-      const user = req.body;
-      console.log('logout user', user);
-      res.clearCookie('token', {maxAge:0}).send({success: true});
-    })
+    // app.post('/logout', async (req, res) => {
+    //   const user = req.body;
+    //   console.log('logout user', user);
+    //   res.clearCookie('token', {maxAge:0}).send({success: true});
+    // })
 
     //services related api
 
@@ -214,7 +214,7 @@ async function run() {
   })
 
         // find cart with user Id base from database
-        app.get("/mycarts/:userId", logger, verifyToken, async (req, res) => {
+        app.get("/mycarts/:userId", async (req, res) => {
           const userID = req.params.userId;
           console.log('cook cookies',req.cookies);
           const query = {userID};
@@ -224,7 +224,7 @@ async function run() {
         });
 
     // find all carts from database
-    app.get('/mycarts', verifyToken, async (req, res) => {
+    app.get('/mycarts', async (req, res) => {
       const cursor = cartCollection.find()
       const result = await cursor.toArray();
       res.send(result)
