@@ -20,7 +20,7 @@ const corsConfig = {
 // middlewars
 app.use(cors({
   origin:[
-   'http://localhost:5173'
+   'https://mobilemaya.vercel.app'
   ],
   credentials: true
 }));
