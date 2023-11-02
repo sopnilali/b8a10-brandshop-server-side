@@ -104,17 +104,9 @@ async function run() {
 
     // find all products from database
         app.get('/products', async(req, res) => {
-          //pagination withbackend
-          const query = req.query
-          const page = query.page
-          const pageNumber = parseInt(page);
-          const perPage = 10;
-          const skip = pageNumber * perPage
-          //
-          const cursor = productCollection.find( ).skip(skip).limit(perPage)
+          const cursor = productCollection.find( )
           const result = await cursor.toArray();
-          const postCount = await productCollection.countDocuments()
-          res.json({result, postCount});
+          res.send(result);
     })
   
     //insert products
