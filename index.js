@@ -18,7 +18,7 @@ const corsConfig = {
   methods: ["GET", "POST", "PUT", "DELETE"]
 }
 // middlewars
-app.use();
+app.use(cors());
 app.options("", cors(corsConfig))
 app.use(express.json());
 app.use(cookieParser())
