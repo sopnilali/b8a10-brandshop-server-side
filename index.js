@@ -18,12 +18,7 @@ const corsConfig = {
   methods: ["GET", "POST", "PUT", "DELETE"]
 }
 // middlewars
-app.use(cors({
-  origin:[
-   'https://mobilemaya.vercel.app'
-  ],
-  credentials: true
-}));
+app.use(cors());
 app.options("", cors(corsConfig))
 app.use(express.json());
 app.use(cookieParser())
