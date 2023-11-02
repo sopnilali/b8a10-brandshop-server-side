@@ -2,6 +2,8 @@ const os=require("os")
 os.hostname=()=>"localhost"
 
 const express = require('express');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser')
 const app = express();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
@@ -16,9 +18,15 @@ const corsConfig = {
   methods: ["GET", "POST", "PUT", "DELETE"]
 }
 // middlewars
-app.use(cors());
+app.use(cors({
+  origin:[
+   'http://localhost:5173'
+  ],
+  credentials: true
+}));
 app.options("", cors(corsConfig))
 app.use(express.json());
+app.use(cookieParser())
 
 
 
@@ -32,6 +40,28 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
+// middlewares
+
+const logger = (req, res, next) => {
+  console.log('login info', req.method, req.url);
+  next();
+}
+
+const verifyToken = (req, res, next) => {
+  const token = req?.cookies?.token
+  // console.log('token in the middleware',token);
+  // no token available
+  if(!token){
+    return res.status(401).send({message: 'unauthorized access'})
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if(err) {
+      return res.status(401).send({message: 'unauthorized access'})
+    }
+    req.user = decoded;
+    next();
+  })
+}
 
 async function run() {
   try {
@@ -48,11 +78,43 @@ async function run() {
         res.send("Welcome to my mobile web app!");
     });
 
+    //auth related api
+
+    app.post('/jwt', async (req, res) => {
+      const user = req.body;
+      console.log('user for token',user);
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,
+      {expiresIn:'1h' });
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none'
+    })
+    .send({success: true});
+    })
+
+    app.post('/logout', async (req, res) => {
+      const user = req.body;
+      console.log('logout user', user);
+      res.clearCookie('token', {maxAge:0}).send({success: true});
+    })
+
+    //services related api
+
     // find all products from database
         app.get('/products', async(req, res) => {
-            const cursor = productCollection.find()
-            const result = await cursor.toArray();
-            res.send(result)
+          //pagination withbackend
+          const query = req.query
+          const page = query.page
+          const pageNumber = parseInt(page);
+          const perPage = 10;
+          const skip = pageNumber * perPage
+          //
+          const cursor = productCollection.find( ).skip(skip).limit(perPage)
+          const result = await cursor.toArray();
+          const postCount = await productCollection.countDocuments()
+          res.json({result, postCount});
     })
   
     //insert products
@@ -160,8 +222,9 @@ async function run() {
   })
 
         // find cart with user Id base from database
-        app.get("/mycarts/:userId", async (req, res) => {
+        app.get("/mycarts/:userId", logger, verifyToken, async (req, res) => {
           const userID = req.params.userId;
+          console.log('cook cookies',req.cookies);
           const query = {userID};
           const cursor = cartCollection.find(query)
           const result = await cursor.toArray();
@@ -169,7 +232,7 @@ async function run() {
         });
 
     // find all carts from database
-    app.get('/mycarts', async(req, res) => {
+    app.get('/mycarts', verifyToken, async (req, res) => {
       const cursor = cartCollection.find()
       const result = await cursor.toArray();
       res.send(result)
