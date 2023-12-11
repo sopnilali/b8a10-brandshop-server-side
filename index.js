@@ -70,30 +70,30 @@ async function run() {
     const reviewCollection = client.db("mobileDB").collection("reviews");
 
     app.get('/', (req, res) => {
-        res.send("Welcome to my mobile web app!");
+        res.send("Welcome to my mobile web app");
     });
 
     // //auth related api
 
-    // app.post('/jwt', async (req, res) => {
-    //   const user = req.body;
-    //   console.log('user for token',user);
-    //   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,
-    //   {expiresIn:'1h' });
+    app.post('/jwt', async (req, res) => {
+      const user = req.body;
+      console.log('user for token',user);
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,
+      {expiresIn:'1h' });
 
-    // res.cookie('token', token, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: 'none'
-    // })
-    // .send({success: true});
-    // })
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none'
+    })
+    .send({success: true});
+    })
 
-    // app.post('/logout', async (req, res) => {
-    //   const user = req.body;
-    //   console.log('logout user', user);
-    //   res.clearCookie('token', {maxAge:0}).send({success: true});
-    // })
+    app.post('/logout', async (req, res) => {
+      const user = req.body;
+      console.log('logout user', user);
+      res.clearCookie('token', {maxAge:0}).send({success: true});
+    })
 
     //services related api
 
