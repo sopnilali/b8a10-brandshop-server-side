@@ -12,14 +12,13 @@ const port = process.env.PORT || 5000;
 //dot environment config
 require('dotenv').config()
 
-const corsConfig = {
-  origin:'',
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"]
-}
-// middlewars
-app.use(cors());
-app.options("", cors(corsConfig))
+app.use(cors({
+  origin: [
+  "http://localhost:5173",
+  "https://library-book-rho.vercel.app",
+],
+  credentials:true
+}));
 app.use(express.json());
 app.use(cookieParser())
 
