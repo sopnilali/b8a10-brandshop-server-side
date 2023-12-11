@@ -15,7 +15,7 @@ require('dotenv').config()
 app.use(cors({
   origin: [
   "http://localhost:5173",
-  "https://library-book-rho.vercel.app",
+  "https://brandshop-mobilemaya.vercel.app",
 ],
   credentials:true
 }));
