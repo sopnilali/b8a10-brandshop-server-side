@@ -14,9 +14,8 @@ var router = express.Router();
     //insert mobile-reviews to database
     router.post('/reviews', async(req, res) => {
       const review = req.body;
-      const result = await Reviews.create(review);
-      console.log(result);
-      res.send(result);
+      const reviewsResult = await Reviews.create(review);
+      res.send(reviewsResult);
   })
 
 module.exports = router;
