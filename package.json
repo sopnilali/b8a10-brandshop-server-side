@@ -2,10 +2,10 @@
   "name": "mobilemaya-server",
   "version": "1.0.0",
   "description": "mobilemaya server in the world.. this server very usefull",
-  "main": "/src/app.js",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node /src/app.js",
-    "dev": "nodemon /src/app.js",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sopnil ali",

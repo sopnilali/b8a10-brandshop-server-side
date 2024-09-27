@@ -13,6 +13,7 @@ const ProductSliderRoutes = require('./routes/ProductSliders')
 const MyCartRoutes = require('./routes/MyCarts');
 const JWTRoutes = require('./routes/Jwt')
 const ReviewRoutes = require('./routes/Reviews')
+
 app.use(cors({
     origin: [`${process.env.LOCAL_URL}`, `${process.env.CLIENT}`],
     credentials: true,
@@ -20,7 +21,6 @@ app.use(cors({
 
 applyMiddleware(app);
 
-try{
 app.use(authenticationRoutes);
 app.use(ProductsRoutes);
 app.use(BrandsRoutes);
@@ -29,29 +29,10 @@ app.use(MyCartRoutes);
 app.use(JWTRoutes);
 app.use(ReviewRoutes);
 
-// routes
-
-    // app.post('/jwt', async (req, res) => {
-    //   const user = req.body;
-    //   console.log('user for token',user);
-    //   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,
-    //   {expiresIn:'1h' });
-
-    // res.cookie('token', token, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: 'none'
-    // })
-    // .send({success: true});
-    // })
-
-app.get('/', (req, res) => {
-    res.send=('Hello World!')
+app.get('/', (req, res, next) => {
+    res.send('Hello World!')
 });
 
-}finally{
-
-}
 
 app.all('*', (req, res, next) => {
     const error = new Error(` The requested url is invalid [${req.url}]`)
@@ -83,6 +64,6 @@ const main = async ()=> {
     })
 }
 
-main().catch(console.dir);
+main();
 
 
